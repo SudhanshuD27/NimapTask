@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +44,15 @@ public class ProductController {
 	 }
 
 	 @DeleteMapping("/{id}")
-	 public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-	     productService.deleteProduct(id);
-	     return ResponseEntity.noContent().build();
+	 public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+	     try {
+	         productService.deleteProduct(id);
+	         // Return a success message with HTTP status 200 OK
+	         return ResponseEntity.ok("Product deleted successfully");
+	     } catch (Exception e) {
+	         // Return a not found message with HTTP status 404 NOT FOUND
+	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+	     }
 	 }
+
 }
