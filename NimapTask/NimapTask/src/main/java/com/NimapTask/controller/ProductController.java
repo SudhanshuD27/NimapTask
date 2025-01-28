@@ -46,11 +46,9 @@ public class ProductController {
 	 @DeleteMapping("/{id}")
 	 public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
 	     try {
-	         productService.deleteProduct(id);
-	         // Return a success message with HTTP status 200 OK
+	         productService.deleteProduct(id);	        
 	         return ResponseEntity.ok("Product deleted successfully");
-	     } catch (Exception e) {
-	         // Return a not found message with HTTP status 404 NOT FOUND
+	     } catch (Exception e) {	         
 	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
 	     }
 	 }
