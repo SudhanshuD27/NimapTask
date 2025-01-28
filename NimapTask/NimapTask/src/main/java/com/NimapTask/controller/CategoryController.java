@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class CategoryController {
 	 private CategoryService categoryService;
 
 	 @GetMapping
-	 public Page<Category> getAllCategories(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+	 public Page<Category> getAllCategories(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
 	     PageRequest pageable = PageRequest.of(page, size);
 	     return categoryService.getAllCategories(pageable);
 	 }
@@ -42,8 +43,13 @@ public class CategoryController {
 	 }
 
 	 @DeleteMapping("/{id}")
-	 public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-	     categoryService.deleteCategory(id);
-	     return ResponseEntity.noContent().build();
+	 public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+	     try {
+	         categoryService.deleteCategory(id);
+	         return ResponseEntity.ok("Category deleted successfully");
+	     } catch (Exception e) {
+	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
+	     }
 	 }
+
 }
